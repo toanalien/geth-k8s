@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: eth-public-beta-jetnodes-net
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: eth-public.beta.jetnodes.net
+    http:
+        paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: geth-mainnet-light-svc
+              port:
+                number: 80

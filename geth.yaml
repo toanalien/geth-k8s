@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: geth-mainnet-light
+spec:
+  serviceName: geth-mainnet-light
+  replicas: 4
+  selector:
+    matchLabels:
+      app: geth-mainnet-light
+  template:
+    metadata:
+      labels:
+        app: geth-mainnet-light
+    spec:
+      containers:
+        - name: geth-mainnet-light
+          image: ethereum/client-go
+          args:
+            [
+              "--http",
+              "--http.addr=0.0.0.0",
+              "--http.vhosts=*",
+              "--http.api=eth,net,web3,txpool",
+              "--ws",
+              "--ws.addr=0.0.0.0",
+              "--syncmode=light"
+            ]
+          ports:
+            - containerPort: 8545
+              name: gethrpc
+            - containerPort: 30303
+              name: gethdiscovery
+          resources:
+            limits:
+              memory: 4000Mi
+            requests:
+              memory: 1000Mi
